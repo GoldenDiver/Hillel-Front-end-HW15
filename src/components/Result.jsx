@@ -3,21 +3,41 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setTitle } from "../futures/title/titleSlice";
+import { useSelector } from "react-redux";
 
-export default function Result({ result }) {
-    const navigate = useNavigate()
-  let res = (
-    (result.reduce((a, b) => a + b, 0) / result.length) *
-    100
-  ).toString();
-
+export default function Result() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  useEffect(() => {dispatch(setTitle(`Result`))}, [dispatch]);
+  const result = useSelector((state) => state.result.result);
+  let res = 0;
+
+  useEffect(() => {
+    dispatch(setTitle(`Result`));
+  }, [dispatch]);
+
+  res =
+    (result
+      .map((data) => {
+        let resAnswer = 0;
+        let colTrue = 0;
+        for (let i = 0; i < data.realResult.length; i++) {
+          if (data.realResult[i] === true) {
+            colTrue++;
+            if (data.realResult[i] === data.userResult[i]) {
+              resAnswer++;
+            }
+          }
+        }
+        return resAnswer / colTrue;
+      })
+      .reduce((a, b) => a + b, 0) *
+      100) /
+    result.length;
 
   return (
     <>
       <Typography variant="h2" component="div" sx={{ flexGrow: 1, mt: 10 }}>
-        Your result: {res}
+        Your result: {res + "%"}
       </Typography>
       <Stack mt={10} spacing={2} direction="row" justifyContent={"center"}>
         <Button variant="contained" onClick={() => navigate("../")}>

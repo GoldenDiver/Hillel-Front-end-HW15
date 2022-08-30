@@ -3,37 +3,33 @@ import Answers from "./Answers";
 import { useDispatch } from "react-redux";
 import { setTitle } from "../futures/title/titleSlice";
 import { useEffect } from "react";
+import { addResult } from "../futures/result/resultSlice";
 
 export default function Question({ item, question, onSendClick }) {
-  const answers = { question: item.id, result: [0, 0, 0, 0] };
-  let res = 0;
-  const col = item.answers.filter((data) => data.answer === true).length;
-
+  const answers = {
+    question: item.id,
+    userResult: [false, false, false, false],
+    realResult: [false, false, false, false],
+  };
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(setTitle(`Quizz`));
   }, [dispatch]);
 
   function getAnswers(id, realAnswer, userAnswer) {
-    if (realAnswer === true && userAnswer === true) {
-      answers.result[id - 1] = 1 / col;
-    } else {
-      if (realAnswer === false && userAnswer === true) {
-        answers.result[id - 1] = -0.5 / col;
-      } else {
-        answers.result[id - 1] = 0;
-      }
-    }
-    res = answers.result.reduce((a, b) => a + b, 0);
+    answers.realResult[id - 1] = realAnswer;
+    answers.userResult[id - 1] = userAnswer;
   }
 
   function sendClick() {
-    onSendClick(res);
+    dispatch(addResult(answers));
+    onSendClick();
   }
 
-  if (question === item.id) {
+  if (question.toString() === item.id) {
     return (
-      <Paper sx={{paddingBottom: '10px'}}>
+      <Paper sx={{ paddingBottom: "10px" }}>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           {item.question}
         </Typography>

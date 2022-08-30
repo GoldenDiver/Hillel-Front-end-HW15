@@ -1,41 +1,37 @@
 import { Box } from "@mui/material";
 import { useEffect } from "react";
 import { useState } from "react";
-import { getItem } from "../services/fetching";
+import { getItems } from "../services/fetching";
 import Question from "./Question";
 import Result from "./Result";
 
-const result = [];
-
 export default function Quizz() {
   const [items, setItems] = useState([]);
-  const [question, setQuestion] = useState("1");
+  const [question, setQuestion] = useState(1);
 
   useEffect(() => {
-    getItem().then((data) => setItems(data));
+    getItems().then((data) => setItems(data));
   }, []);
 
-  function onSendClick(res) {
-    setQuestion((Number(question) + 1).toString());
-    result.push(res);
+  function onSendClick() {
+    setQuestion((question + 1).toString());
   }
-
-  const questions = items.length
 
   return (
     <Box textAlign={"center"}>
-      {Number(question) <= questions ? (
+      {items.length > 0 && items.length >= question ? (
         items.map((data) => (
           <Question
             key={data.id}
             item={data}
             question={question}
-            questions={questions}
             onSendClick={onSendClick}
           />
         ))
+      ) : items.length ? (
+        <Result />
       ) : (
-        <Result result={result} />
+        <></>
       )}
     </Box>
   );

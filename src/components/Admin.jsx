@@ -2,7 +2,7 @@ import { Box, Fab } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setTitle } from "../futures/title/titleSlice";
-import { createItem, deleteItem, getItem, updateItem } from "../services/fetching";
+import { createItem, deleteItem, getItems, updateItem } from "../services/fetching";
 import QuestionRender from "./QuestionRender";
 import AddIcon from "@mui/icons-material/Add";
 
@@ -12,7 +12,7 @@ export default function Admin() {
 
   useEffect(() => {
     dispatch(setTitle(`Admin Editor`));
-    getItem().then((data) => setItems(data));
+    getItems().then((data) => setItems(data));
   }, [dispatch]);
 
   function onSaveClick(newItem) {
