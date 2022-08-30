@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setTitle } from "../futures/title/titleSlice";
 import { useSelector } from "react-redux";
+import { setCurrentQuestion } from "../futures/currentQuestion/currentQuestionSlice";
 
 export default function Result() {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ export default function Result() {
         <Button variant="contained" onClick={() => navigate("../")}>
           HomePage
         </Button>
-        <Button variant="contained" onClick={() => window.location.reload()}>
+        <Button variant="contained" onClick={() => dispatch(setCurrentQuestion(1))}>
           Play again
         </Button>
       </Stack>

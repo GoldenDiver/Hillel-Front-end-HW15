@@ -10,9 +10,15 @@ import { useEffect } from "react";
 export default function HomePage() {
   const StyledBox = styled(Box)({ marginTop: 20, textAlign: "center" });
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
-  useEffect(() => {dispatch(setTitle(`HomePage`))}, [dispatch]);
+  
+  useEffect(() => {
+    dispatch(setTitle(`HomePage`));
+  }, [dispatch]);
+
+  function startQuizz() {
+    navigate("../quizz");
+  }
 
   return (
     <StyledBox>
@@ -20,7 +26,7 @@ export default function HomePage() {
         Wellcome to my JSQuizz project
       </Typography>
       <Stack mt={5} spacing={2} direction="row" justifyContent={"center"}>
-        <Button variant="contained" onClick={() => navigate("../quizz")}>
+        <Button variant="contained" onClick={startQuizz}>
           Start quizz
         </Button>
       </Stack>
